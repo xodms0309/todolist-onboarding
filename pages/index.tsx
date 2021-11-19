@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const [todolist, setTodoList]=useState<ITodoItem[]>([]);
   const onHandleInputChange=(e:React.ChangeEvent<HTMLInputElement>)=>{
     setTodo(e.target.value);
-}
+  }
   const addTodo = () => {
     const item:ITodoItem={
       id:v1(),
@@ -20,6 +20,10 @@ const Home: NextPage = () => {
       setTodoList([...todolist, item])
     }
     setTodo('');
+  }
+  const deleteTodo=(id:string)=>{
+    const newTodolist=todolist.filter((todo)=>todo.id!==id);
+    setTodoList(newTodolist);
   }
   return (
   <>
@@ -36,9 +40,12 @@ const Home: NextPage = () => {
       {
         todolist.map((item)=>{
           return(
-          <li key={item.id}>
-            {item.todo}
-          </li>
+            <div key={item.id}>
+              <li>
+                {item.todo}
+              </li>
+              <button onClick={()=>deleteTodo(item.id)}>Delete Todo</button>
+            </div>
           )
         })
       }
