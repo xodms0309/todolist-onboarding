@@ -1,7 +1,13 @@
 import type { NextPage } from 'next'
+import TodoInput from '../components/TodoInput'
 const Home: NextPage = () => {
   return (
-    <div>Todolist</div>
+    <header>
+      <div>Todolist</div>
+      <TodoInput />
+      <button>Add Todo</button>
+    </header>
+
   )
 }
 
