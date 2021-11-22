@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { v1 } from "uuid";
-
+import axios from "axios";
 import Todo from "../components/Todo";
 export interface ITodoItem {
   id: string;
@@ -9,6 +9,18 @@ export interface ITodoItem {
   isCompleted: boolean;
 }
 const Home: NextPage = () => {
+  useEffect(() => {
+    getTodoApi();
+  }, []);
+  const getTodoApi = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/todoapi");
+      const data = res.data;
+      setTodoList(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const [todo, setTodo] = useState("");
   const [todolist, setTodoList] = useState<ITodoItem[]>([]);
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,4 +63,10 @@ const Home: NextPage = () => {
     </>
   );
 };
+// export async function getStaticProps() {
+//   const res = await axios.get("http://localhost:3000/api/todoapi");
+//   const data = await res.data;
+//   console.log(res, data);
+//   return { props: { data } };
+// }
 export default Home;
