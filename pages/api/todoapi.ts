@@ -25,5 +25,8 @@ export default function handler(
         content: item.id === id ? content : item.content,
       }));
       return res.status(200).json(todo);
+    case "DELETE":
+      todo = todo.filter((item) => item.id !== id);
+      return res.status(200).json(todo);
   }
 }

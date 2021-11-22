@@ -20,12 +20,22 @@ export default function Todo({ item, todolist, setTodoList }: ITodo) {
       console.log(e);
     }
   };
+  const deleteTodoApi = async (id: string) => {
+    try {
+      axios.delete("http://localhost:3000/api/todoapi", {
+        data: { id: id },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
   };
   const deleteTodo = (id: string) => {
     const newTodolist = todolist.filter((todo) => todo.id !== id);
     setTodoList(newTodolist);
+    deleteTodoApi(id);
   };
   const completeTodo = (id: string) => {
     const newTodoList = todolist.map((todo) => ({
