@@ -1,40 +1,29 @@
 import type { NextPage } from "next";
 import { useState } from "react";
 import { v1 } from "uuid";
-import indexStyles from "../styles/index.module.css";
-interface ITodoItem {
+
+import Todo from "../components/Todo";
+export interface ITodoItem {
   id: string;
-  todo: string;
+  content: string;
   isCompleted: boolean;
 }
 const Home: NextPage = () => {
   const [todo, setTodo] = useState("");
   const [todolist, setTodoList] = useState<ITodoItem[]>([]);
-
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
   };
   const addTodo = () => {
     const item: ITodoItem = {
       id: v1(),
-      todo: todo,
+      content: todo,
       isCompleted: false,
     };
     if (todo) {
       setTodoList([...todolist, item]);
     }
     setTodo("");
-  };
-  const deleteTodo = (id: string) => {
-    const newTodolist = todolist.filter((todo) => todo.id !== id);
-    setTodoList(newTodolist);
-  };
-  const completeTodo = (id: string) => {
-    const newTodo = todolist.map((todo) => ({
-      ...todo,
-      isCompleted: todo.id === id ? !todo.isCompleted : todo.isCompleted,
-    }));
-    setTodoList(newTodo);
   };
   return (
     <>
@@ -50,13 +39,12 @@ const Home: NextPage = () => {
       <ul>
         {todolist.map((item) => {
           return (
-            <div key={item.id}>
-              <li className={item.isCompleted ? indexStyles.completed : ""}>
-                {item.todo}
-              </li>
-              <button onClick={() => deleteTodo(item.id)}>Delete Todo</button>
-              <button onClick={() => completeTodo(item.id)}>Completed</button>
-            </div>
+            <Todo
+              key={item.id}
+              item={item}
+              todolist={todolist}
+              setTodoList={setTodoList}
+            />
           );
         })}
       </ul>
