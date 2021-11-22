@@ -1,23 +1,29 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
+import { v1 } from "uuid";
 import { ITodoItem } from "..";
-const todo = [
-  { id: "1", content: "a", isCompleted: false },
-  { id: "2", content: "b", isCompleted: false },
-  { id: "3", content: "c", isCompleted: false },
+let todo: ITodoItem[] = [
+  { id: v1(), content: "a", isCompleted: false },
+  { id: v1(), content: "b", isCompleted: false },
+  { id: v1(), content: "c", isCompleted: false },
 ];
 
 export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
-  const {
-    query: { id, content, isCompleted },
-    method,
-  } = req;
-  switch (method) {
+  const { id, content, isCompleted } = req.body as ITodoItem;
+  switch (req.method) {
     case "GET":
       return res.status(200).json(todo);
+    case "POST":
+      todo = todo.concat({ id, content, isCompleted });
+      return res.status(200).json(todo);
+    case "PATCH":
+      todo = todo.map((item) => ({
+        ...item,
+        content: item.id === id ? content : item.content,
+      }));
+      return res.status(200).json(todo);
   }
-  //return res.json(todo);
 }

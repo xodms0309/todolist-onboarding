@@ -21,6 +21,14 @@ const Home: NextPage = () => {
       console.log(e);
     }
   };
+  const postTodoApi = async (todo: ITodoItem) => {
+    try {
+      const res = await axios.post("http://localhost:3000/api/todoapi", todo);
+      const data = res.data;
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const [todo, setTodo] = useState("");
   const [todolist, setTodoList] = useState<ITodoItem[]>([]);
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +42,7 @@ const Home: NextPage = () => {
     };
     if (todo) {
       setTodoList([...todolist, item]);
+      postTodoApi(item);
     }
     setTodo("");
   };

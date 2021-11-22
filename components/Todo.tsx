@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import indexStyles from "../styles/index.module.css";
 import { ITodoItem } from "../pages";
 interface ITodo {
@@ -9,6 +10,16 @@ interface ITodo {
 export default function Todo({ item, todolist, setTodoList }: ITodo) {
   const [newTodo, setNewTodo] = useState("");
   const [edit, setEdit] = useState(false);
+  const editTodoApi = async (id: string, newTodo: string) => {
+    try {
+      axios.patch("http://localhost:3000/api/todoapi", {
+        id: id,
+        content: newTodo,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
   };
@@ -33,6 +44,7 @@ export default function Todo({ item, todolist, setTodoList }: ITodo) {
     }));
     if (newTodo) {
       setTodoList(newTodoList);
+      editTodoApi(id, newTodo);
     }
     setNewTodo("");
     setEdit(!edit);
