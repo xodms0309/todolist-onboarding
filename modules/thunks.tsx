@@ -1,22 +1,6 @@
 import axios from "axios";
 import { ThunkAction } from "redux-thunk";
-import {
-  GET_TODO,
-  GET_TODO_SUCCESS,
-  GET_TODO_FAIL,
-  POST_TODO,
-  POST_TODO_SUCCESS,
-  POST_TODO_FAIL,
-  DEL_TODO,
-  DEL_TODO_SUCCESS,
-  DEL_TODO_FAIL,
-  EDIT_TODO,
-  EDIT_TODO_SUCCESS,
-  EDIT_TODO_FAIL,
-  COMPLETE_TODO,
-  COMPLETE_TODO_SUCCESS,
-  COMPLETE_TODO_FAIL,
-} from "./actions";
+import { getTodo, postTodo, delTodo, editTodo, completeTodo } from "./actions";
 import { RootState } from ".";
 import {
   ICompleteTodoType,
@@ -29,44 +13,44 @@ import { ITodoItem } from "../pages";
 
 export const getTodoThunk =
   (): ThunkAction<void, RootState, null, IGetTodoType> => async (dispatch) => {
-    dispatch({ type: GET_TODO });
+    dispatch({ type: getTodo.request });
     try {
       const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
       const todos = res.data;
       console.log(res);
-      dispatch({ type: GET_TODO_SUCCESS, todos });
+      dispatch({ type: getTodo.success, todos });
     } catch (e) {
-      dispatch({ type: GET_TODO_FAIL, error: e });
+      dispatch({ type: getTodo.failure, error: e });
     }
   };
 
 export const postTodoThunk =
   (todo: ITodoItem): ThunkAction<void, RootState, null, IPostTodoType> =>
   async (dispatch) => {
-    dispatch({ type: POST_TODO });
+    dispatch({ type: postTodo.request });
     try {
       const res = await axios.post(
         "https://jsonplaceholder.typicode.com/todos",
         todo
       );
       const todos = res.data;
-      dispatch({ type: POST_TODO_SUCCESS, todos });
+      dispatch({ type: postTodo.success, todos });
     } catch (e) {
-      dispatch({ type: POST_TODO_FAIL, error: e });
+      dispatch({ type: postTodo.failure, error: e });
     }
   };
 
 export const delTodoThunk =
   (id: number): ThunkAction<void, RootState, null, IDeleteTodoType> =>
   async (dispatch) => {
-    dispatch({ type: DEL_TODO });
+    dispatch({ type: delTodo.request });
     try {
       await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         data: { id: id },
       });
-      dispatch({ type: DEL_TODO_SUCCESS, id });
+      dispatch({ type: delTodo.success, id });
     } catch (e) {
-      dispatch({ type: DEL_TODO_FAIL, error: e });
+      dispatch({ type: delTodo.failure, error: e });
     }
   };
 
@@ -76,7 +60,7 @@ export const editTodoThunk =
     todo: string
   ): ThunkAction<void, RootState, null, IEditTodoType> =>
   async (dispatch) => {
-    dispatch({ type: EDIT_TODO });
+    dispatch({ type: editTodo.request });
     try {
       const res = await axios.patch(
         `https://jsonplaceholder.typicode.com/todos/${id}`,
@@ -86,22 +70,22 @@ export const editTodoThunk =
         }
       );
       const todos = res.data;
-      dispatch({ type: EDIT_TODO_SUCCESS, todos });
+      dispatch({ type: editTodo.success, todos });
     } catch (e) {
-      dispatch({ type: EDIT_TODO_FAIL, error: e });
+      dispatch({ type: editTodo.failure, error: e });
     }
   };
 
 export const completeTodoThunk =
   (id: number): ThunkAction<void, RootState, null, ICompleteTodoType> =>
   async (dispatch) => {
-    dispatch({ type: COMPLETE_TODO });
+    dispatch({ type: completeTodo.request });
     try {
       await axios.patch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         id: id,
       });
-      dispatch({ type: COMPLETE_TODO_SUCCESS, id });
+      dispatch({ type: completeTodo.success, id });
     } catch (e) {
-      dispatch({ type: COMPLETE_TODO_FAIL, error: e });
+      dispatch({ type: completeTodo.failure, error: e });
     }
   };

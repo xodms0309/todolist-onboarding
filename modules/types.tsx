@@ -33,27 +33,48 @@ export interface ICompleteTodoType {
 }
 
 export interface IGetTodoAction {
-  type: IGetTodoType;
+  type:
+    | typeof actions.GET_TODO
+    | typeof actions.GET_TODO_SUCCESS
+    | typeof actions.GET_TODO_FAIL;
   todos: ITodoItem;
   error: AxiosError;
 }
 export interface IPostTodoAction {
-  type: IPostTodoType;
+  type:
+    | typeof actions.POST_TODO
+    | typeof actions.POST_TODO_SUCCESS
+    | typeof actions.POST_TODO_FAIL;
   todos: ITodoItem;
   error: AxiosError;
 }
 export interface IDeleteTodoAction {
-  type: IDeleteTodoType;
+  type:
+    | typeof actions.DEL_TODO
+    | typeof actions.DEL_TODO_SUCCESS
+    | typeof actions.DEL_TODO_FAIL;
   id: number;
   error: AxiosError;
 }
 export interface IEditTodoAction {
-  type: IEditTodoType;
+  type:
+    | typeof actions.EDIT_TODO
+    | typeof actions.EDIT_TODO_SUCCESS
+    | typeof actions.EDIT_TODO_FAIL;
   todos: ITodoItem;
   error: AxiosError;
 }
 export interface ICompleteTodoAction {
-  type: ICompleteTodoType;
+  type:
+    | typeof actions.COMPLETE_TODO
+    | typeof actions.COMPLETE_TODO_SUCCESS
+    | typeof actions.COMPLETE_TODO_FAIL;
   id: number;
   error: AxiosError;
 }
+export type TAction =
+  | IGetTodoAction
+  | IPostTodoAction
+  | ICompleteTodoAction
+  | IDeleteTodoAction
+  | IEditTodoAction;

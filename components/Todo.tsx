@@ -1,6 +1,6 @@
 import { useState } from "react";
 import indexStyles from "../styles/index.module.css";
-import { ITodoItem } from "../pages";
+import { ITodoItem } from "../pages/index";
 import { useDispatch } from "react-redux";
 import {
   delTodoThunk,
@@ -8,7 +8,11 @@ import {
   editTodoThunk,
 } from "../modules/thunks";
 
-export default function Todo({ item }: any) {
+interface ITodo {
+  item: ITodoItem;
+}
+
+export default function Todo({ item }: ITodo) {
   const { id, title, completed } = item;
   const [newTodo, setNewTodo] = useState("");
   const [edit, setEdit] = useState(false);

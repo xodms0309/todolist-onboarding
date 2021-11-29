@@ -16,6 +16,7 @@ import {
   COMPLETE_TODO_SUCCESS,
   COMPLETE_TODO_FAIL,
 } from "./actions";
+import { TAction } from "./types";
 const initialTodo: ITodoItem[] = [
   {
     id: 0,
@@ -23,7 +24,7 @@ const initialTodo: ITodoItem[] = [
     completed: false,
   },
 ];
-export function todo(state = initialTodo, action: any) {
+export function todo(state = initialTodo, action: TAction) {
   switch (action.type) {
     case GET_TODO:
     case POST_TODO:
