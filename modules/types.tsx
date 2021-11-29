@@ -57,11 +57,3 @@ export interface ICompleteTodoAction {
   id: number;
   error: AxiosError;
 }
-export interface Action {
-  action:
-    | IGetTodoAction
-    | IPostTodoAction
-    | ICompleteTodoAction
-    | IDeleteTodoAction
-    | IEditTodoAction;
-}

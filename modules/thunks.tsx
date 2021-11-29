@@ -25,6 +25,7 @@ import {
   IGetTodoType,
   IPostTodoType,
 } from "./types";
+import { ITodoItem } from "../pages";
 
 export const getTodoThunk =
   (): ThunkAction<void, RootState, null, IGetTodoType> => async (dispatch) => {
@@ -32,6 +33,7 @@ export const getTodoThunk =
     try {
       const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
       const todos = res.data;
+      console.log(res);
       dispatch({ type: GET_TODO_SUCCESS, todos });
     } catch (e) {
       dispatch({ type: GET_TODO_FAIL, error: e });
@@ -39,7 +41,7 @@ export const getTodoThunk =
   };
 
 export const postTodoThunk =
-  (todo: string): ThunkAction<void, RootState, null, IPostTodoType> =>
+  (todo: ITodoItem): ThunkAction<void, RootState, null, IPostTodoType> =>
   async (dispatch) => {
     dispatch({ type: POST_TODO });
     try {

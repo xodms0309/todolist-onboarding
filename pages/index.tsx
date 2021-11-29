@@ -1,48 +1,32 @@
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { v1 } from "uuid";
-import axios from "axios";
 import Todo from "../components/Todo";
+import { useDispatch, useSelector } from "react-redux";
+import { getTodoThunk, postTodoThunk } from "../modules/thunks";
+import { RootState } from "../modules";
 export interface ITodoItem {
   id: number;
   title: string;
   completed: boolean;
 }
 const Home: NextPage = () => {
-  useEffect(() => {
-    getTodoApi();
-  }, []);
-  const getTodoApi = async () => {
-    try {
-      const res = await axios.get("http://localhost:3000/api/todoapi");
-      const data = res.data;
-      setTodoList(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const postTodoApi = async (todo: ITodoItem) => {
-    try {
-      const res = await axios.post("http://localhost:3000/api/todoapi", todo);
-      const data = res.data;
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const [todo, setTodo] = useState("");
-  const [todolist, setTodoList] = useState<ITodoItem[]>([]);
+  const todolist = useSelector((state: RootState) => state.todo);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTodoThunk());
+  }, [dispatch]);
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
   };
   const addTodo = () => {
     const item: ITodoItem = {
-      id: v1(),
-      content: todo,
-      isCompleted: false,
+      id: todolist.length + 1,
+      title: todo,
+      completed: false,
     };
     if (todo) {
-      setTodoList([...todolist, item]);
-      postTodoApi(item);
+      dispatch(postTodoThunk(item));
     }
     setTodo("");
   };
@@ -58,24 +42,12 @@ const Home: NextPage = () => {
         <button onClick={() => addTodo()}>Add Todo</button>
       </header>
       <ul>
-        {todolist.map((item) => {
-          return (
-            <Todo
-              key={item.id}
-              item={item}
-              todolist={todolist}
-              setTodoList={setTodoList}
-            />
-          );
-        })}
+        {todolist &&
+          todolist.map((item) => {
+            return <Todo key={item.id} item={item} />;
+          })}
       </ul>
     </>
   );
 };
-// export async function getStaticProps() {
-//   const res = await axios.get("http://localhost:3000/api/todoapi");
-//   const data = await res.data;
-//   console.log(res, data);
-//   return { props: { data } };
-// }
 export default Home;
