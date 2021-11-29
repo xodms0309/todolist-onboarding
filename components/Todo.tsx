@@ -12,19 +12,21 @@ export default function Todo({ item, todolist, setTodoList }: ITodo) {
   const [edit, setEdit] = useState(false);
   const editTodoApi = async (id: string, newTodo: string) => {
     try {
-      axios.patch("http://localhost:3000/api/todoapi", {
+      const res = axios.patch("http://localhost:3000/api/todoapi", {
         id: id,
         content: newTodo,
       });
+      console.log(res);
     } catch (e) {
       console.log(e);
     }
   };
   const deleteTodoApi = async (id: string) => {
     try {
-      axios.delete("http://localhost:3000/api/todoapi", {
+      const res = axios.delete("http://localhost:3000/api/todoapi", {
         data: { id: id },
       });
+      console.log(res);
     } catch (e) {
       console.log(e);
     }
