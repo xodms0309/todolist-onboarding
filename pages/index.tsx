@@ -4,9 +4,9 @@ import { v1 } from "uuid";
 import axios from "axios";
 import Todo from "../components/Todo";
 export interface ITodoItem {
-  id: string;
-  content: string;
-  isCompleted: boolean;
+  id: number;
+  title: string;
+  completed: boolean;
 }
 const Home: NextPage = () => {
   useEffect(() => {
