@@ -18,7 +18,7 @@ export const getTodoThunk =
       const res = await axios.get("https://jsonplaceholder.typicode.com/todos");
       const todos = res.data;
       console.log(res);
-      dispatch({ type: getTodo.success, todos });
+      dispatch({ type: getTodo.success, payload: todos });
     } catch (e) {
       dispatch({ type: getTodo.failure, error: e });
     }
@@ -34,7 +34,7 @@ export const postTodoThunk =
         todo
       );
       const todos = res.data;
-      dispatch({ type: postTodo.success, todos });
+      dispatch({ type: postTodo.success, payload: todos });
     } catch (e) {
       dispatch({ type: postTodo.failure, error: e });
     }
@@ -48,7 +48,7 @@ export const delTodoThunk =
       await axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         data: { id: id },
       });
-      dispatch({ type: delTodo.success, id });
+      dispatch({ type: delTodo.success, payload: id });
     } catch (e) {
       dispatch({ type: delTodo.failure, error: e });
     }
@@ -70,7 +70,7 @@ export const editTodoThunk =
         }
       );
       const todos = res.data;
-      dispatch({ type: editTodo.success, todos });
+      dispatch({ type: editTodo.success, payload: todos });
     } catch (e) {
       dispatch({ type: editTodo.failure, error: e });
     }
@@ -84,7 +84,7 @@ export const completeTodoThunk =
       await axios.patch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
         id: id,
       });
-      dispatch({ type: completeTodo.success, id });
+      dispatch({ type: completeTodo.success, payload: id });
     } catch (e) {
       dispatch({ type: completeTodo.failure, error: e });
     }
