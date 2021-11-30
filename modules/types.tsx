@@ -1,80 +1,33 @@
 import * as actions from "./actions";
-import { ITodoItem } from "../pages";
-import { AxiosError } from "axios";
+import { ActionType } from "typesafe-actions";
+export type TAction = ActionType<typeof actions>;
 export interface IGetTodoType {
   type:
-    | typeof actions.GET_TODO
-    | typeof actions.GET_TODO_SUCCESS
-    | typeof actions.GET_TODO_FAIL;
+    | typeof actions.getTodo.request
+    | typeof actions.getTodo.success
+    | typeof actions.getTodo.failure;
 }
 export interface IPostTodoType {
   type:
-    | typeof actions.POST_TODO
-    | typeof actions.POST_TODO_SUCCESS
-    | typeof actions.POST_TODO_FAIL;
+    | typeof actions.postTodo.request
+    | typeof actions.postTodo.success
+    | typeof actions.postTodo.failure;
 }
 export interface IDeleteTodoType {
   type:
-    | typeof actions.DEL_TODO
-    | typeof actions.DEL_TODO_SUCCESS
-    | typeof actions.DEL_TODO_FAIL;
+    | typeof actions.delTodo.request
+    | typeof actions.delTodo.success
+    | typeof actions.delTodo.failure;
 }
 export interface IEditTodoType {
   type:
-    | typeof actions.EDIT_TODO
-    | typeof actions.EDIT_TODO_SUCCESS
-    | typeof actions.EDIT_TODO_FAIL;
+    | typeof actions.editTodo.request
+    | typeof actions.editTodo.success
+    | typeof actions.editTodo.failure;
 }
 export interface ICompleteTodoType {
   type:
-    | typeof actions.COMPLETE_TODO
-    | typeof actions.COMPLETE_TODO_SUCCESS
-    | typeof actions.COMPLETE_TODO_FAIL;
+    | typeof actions.completeTodo.request
+    | typeof actions.completeTodo.success
+    | typeof actions.completeTodo.failure;
 }
-
-export interface IGetTodoAction {
-  type:
-    | typeof actions.GET_TODO
-    | typeof actions.GET_TODO_SUCCESS
-    | typeof actions.GET_TODO_FAIL;
-  todos: ITodoItem;
-  error: AxiosError;
-}
-export interface IPostTodoAction {
-  type:
-    | typeof actions.POST_TODO
-    | typeof actions.POST_TODO_SUCCESS
-    | typeof actions.POST_TODO_FAIL;
-  todos: ITodoItem;
-  error: AxiosError;
-}
-export interface IDeleteTodoAction {
-  type:
-    | typeof actions.DEL_TODO
-    | typeof actions.DEL_TODO_SUCCESS
-    | typeof actions.DEL_TODO_FAIL;
-  id: number;
-  error: AxiosError;
-}
-export interface IEditTodoAction {
-  type:
-    | typeof actions.EDIT_TODO
-    | typeof actions.EDIT_TODO_SUCCESS
-    | typeof actions.EDIT_TODO_FAIL;
-  todos: ITodoItem;
-  error: AxiosError;
-}
-export interface ICompleteTodoAction {
-  type:
-    | typeof actions.COMPLETE_TODO
-    | typeof actions.COMPLETE_TODO_SUCCESS
-    | typeof actions.COMPLETE_TODO_FAIL;
-  id: number;
-  error: AxiosError;
-}
-export type TAction =
-  | IGetTodoAction
-  | IPostTodoAction
-  | ICompleteTodoAction
-  | IDeleteTodoAction
-  | IEditTodoAction;
