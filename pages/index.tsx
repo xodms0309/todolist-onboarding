@@ -1,11 +1,8 @@
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { useState } from "react";
+import { useQuery, useQueryClient, useMutation } from "react-query";
 import Todo from "../components/Todo";
-import { useDispatch, useSelector } from "react-redux";
-import { getTodoThunk, postTodoThunk } from "../modules/thunks";
-import { RootState } from "../modules";
-import { requestGetTodo } from "../modules/api";
+import { requestGetTodo, requestPostTodo } from "../modules/api";
 export interface ITodoItem {
   id: number;
   title: string;
@@ -15,12 +12,12 @@ const Home: NextPage = () => {
   const [todo, setTodo] = useState("");
   const queryClient = useQueryClient();
   const todolist: ITodoItem[] = useQuery("todos", requestGetTodo).data;
-  console.log(todolist);
-  //const todolist = useSelector((state: RootState) => state.todo);
-  //const dispatch = useDispatch();
-  // useEffect(() => {
-  //   dispatch(getTodoThunk());
-  // }, [dispatch]);
+  const postTodo = useMutation(requestPostTodo, {
+    onSuccess: (todo) => {
+      todolist.push(todo);
+    },
+  });
+  //console.log(todolist);
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTodo(e.target.value);
   };
@@ -30,9 +27,9 @@ const Home: NextPage = () => {
       title: todo,
       completed: false,
     };
-    // if (todo) {
-    //   dispatch(postTodoThunk(item));
-    // }
+    if (todo) {
+      postTodo.mutate(item);
+    }
     setTodo("");
   };
   return (
