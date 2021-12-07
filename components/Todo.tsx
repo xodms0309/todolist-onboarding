@@ -2,6 +2,8 @@ import { useState } from "react";
 import indexStyles from "../styles/index.module.css";
 import { ITodoItem } from "../pages/index";
 import { useDispatch } from "react-redux";
+import { useMutation } from "react-query";
+import { requestDeleteTodo } from "../modules/api";
 import {
   delTodoThunk,
   completeTodoThunk,
@@ -10,32 +12,42 @@ import {
 
 interface ITodo {
   item: ITodoItem;
+  todolist: ITodoItem[];
 }
 
-export default function Todo({ item }: ITodo) {
+export default function Todo({ item, todolist }: ITodo) {
   const { id, title, completed } = item;
   const [newTodo, setNewTodo] = useState("");
   const [edit, setEdit] = useState(false);
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
   const onHandleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewTodo(e.target.value);
   };
+  const deleteMutation = useMutation(requestDeleteTodo, {
+    onSuccess: (id) => {
+      console.log(id);
+      todolist = todolist.filter((item) => item.id !== id);
+      console.log(todolist);
+    },
+  });
   const deleteTodo = (id: number) => {
-    dispatch(delTodoThunk(id));
+    deleteMutation.mutate(id);
+    //console.log(id);
   };
-  const completeTodo = (id: number) => {
-    dispatch(completeTodoThunk(id));
-  };
-  const onEditTodoClick = () => {
-    setEdit(!edit);
-  };
-  const editTodo = (id: number) => {
-    if (newTodo) {
-      dispatch(editTodoThunk(id, newTodo));
-    }
-    setNewTodo("");
-    setEdit(!edit);
-  };
+
+  // const completeTodo = (id: number) => {
+  //   dispatch(completeTodoThunk(id));
+  // };
+  // const onEditTodoClick = () => {
+  //   setEdit(!edit);
+  // };
+  // const editTodo = (id: number) => {
+  //   if (newTodo) {
+  //     dispatch(editTodoThunk(id, newTodo));
+  //   }
+  //   setNewTodo("");
+  //   setEdit(!edit);
+  // };
   return (
     <div>
       {edit ? (
@@ -48,12 +60,12 @@ export default function Todo({ item }: ITodo) {
         <li className={completed ? indexStyles.completed : ""}>{title}</li>
       )}
       <button onClick={() => deleteTodo(id)}>Delete Todo</button>
-      {edit ? (
+      {/* {edit ? (
         <button onClick={() => editTodo(id)}>Edit</button>
       ) : (
         <button onClick={() => onEditTodoClick()}>Edit Todo</button>
       )}
-      <button onClick={() => completeTodo(id)}>Completed</button>
+      <button onClick={() => completeTodo(id)}>Completed</button> */}
     </div>
   );
 }

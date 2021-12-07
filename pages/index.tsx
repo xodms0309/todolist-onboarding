@@ -11,7 +11,8 @@ export interface ITodoItem {
 const Home: NextPage = () => {
   const [todo, setTodo] = useState("");
   const queryClient = useQueryClient();
-  const todolist: ITodoItem[] = useQuery("todos", requestGetTodo).data;
+  const { isLoading, data } = useQuery("todos", requestGetTodo);
+  const todolist: ITodoItem[] = data;
   const postTodo = useMutation(requestPostTodo, {
     onSuccess: (todo) => {
       todolist.push(todo);
@@ -44,10 +45,14 @@ const Home: NextPage = () => {
         <button onClick={() => addTodo()}>Add Todo</button>
       </header>
       <ul>
-        {todolist &&
+        {isLoading ? (
+          <div>Loading..</div>
+        ) : (
+          todolist &&
           todolist.map((item) => {
-            return <div key={item.id}>{item.title}</div>;
-          })}
+            return <Todo key={item.id} item={item} todolist={todolist} />;
+          })
+        )}
       </ul>
     </>
   );
